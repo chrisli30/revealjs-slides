@@ -6,52 +6,53 @@ duration: 1 hour
 
 # Recurring Payment for Moonriver
 
-### Build dApps with XCM leveraging polkadot.js.org/apps and node.js
+### Chris Li, founder of OAK Network
+
+### 09.14.2023
 
 Notes:
 
-As we learned in Chapter 3, the XCM pallet serves as a bridge between the XCVM subsystem and the FRAME subsystem.
-It enables us to send and execute XCM and interact with the XCM executor.
-In this chapter, I, as the founder of OAK Network and a parachain developer, will demonstrate how to build products using XCM and dispatch them from both polkadot.js apps and Javascript code.
+In this lecture, I will demonstrate how to send a simple transfer transaction on another chain using XCM on Moonriver, and an advanced use case to schedule recurring payment. The demo transactions will be dispatched from both polkadot.js app dashboard and in javascript.
 
 ---
 
-### _At the end of this lecture, you will be able to:_
+### _In this lecture, you will gain knowledge and skills in:_
 
 <pba-flex center>
 
-1. Configure XCM for parachain HRMP messages.
-1. Understand the construction and execution of XCM messages.
-1. Perform HRMP transactions between parachains using templates.
-1. Develop proficiency in debugging XCM using xcm-tools.
+1. Navigate Moonriver’s xcmTransactor pallet
+2. Grasp the concept of account abstraction for XCM executions
+3. Practice the construction and execution of XCM messages.
+4. Conduct XCM transactions between Moonriver and Turing Network.
+5. Debug XCM using Moonbeam’s xcm-tools.
+6. Explore OAK Network’s automation features.
 
 </pba-flex>
 
 ---
 
-# Overview
+# Lecture Overview
 
 <pba-flex center>
 
 1. Define the product
-1. Preparation
-1. Compose XCM message
-1. Build client code
-1. Debug live
+2. Preparation
+3. Compose XCM message
+4. Build client code
+5. Debug live
+6. Advanced - recurring payment
 
 </pba-flex>
 
 Notes:
 
-In this session, I will guide you through the process of building a real use case of XCM, specifically from the perspective of a parachain developer.
-Our main focus will be on developing for a parachain, not a relay chain like Polkadot.
-Consequently, we will primarily concentrate on HRMP messages, enabling horizontal communication between two parachains.
+In this session, I will guide you through the process of building a real use case of XCM, specifically from the perspective of an dapp developer.
 
 1. Define Your Product: We'll start by defining the product or application we want to build, clarifying its objectives and functionalities.
-1. Prepare Chain Config: Next, we'll prepare the necessary chain configurations, ensuring that our application is well-integrated with the target blockchain environment.
-1. Compose XCM Message: We'll dive into composing XCM messages, which are crucial for communication and interactions between different components of our application.
-1. Build Client Code: This step will involve the actual development of the client code for our application, implementing the logic and functionality we designed earlier.
-1. Debug Live: Finally, we'll explore how to debug our application in a live environment, ensuring that it functions correctly and efficiently.
+2. Prepare Chain Config: Next, we'll prepare the necessary chain configurations, ensuring that our application is well-integrated with the target blockchain environment.
+3. Compose XCM Message: We'll dive into composing XCM messages, which are crucial for communication and interactions between different components of our application.
+4. Build Client Code: This step will involve the actual development of the client code for our application, implementing the logic and functionality we designed earlier.
+5. Debug Live: Finally, we'll explore how to debug our application in a live environment, ensuring that it functions correctly and efficiently.
 
 By the end of this presentation, you'll have a comprehensive understanding of the XCM framework and be well-equipped to build your own applications effectively.
 
@@ -61,7 +62,7 @@ Let's get started!
 
 # Define the product
 
-Objective: establish a seamless monthly recurring payment of MOVR on the Moonriver parachain.
+Objective: schedule a recurring payment on Turing Network by using Moonriver’s remote execution.
 
 Notes:
 
@@ -130,6 +131,15 @@ Notes:
 1. This remote wallet acts as an account abstraction, empowering the blockchain to execute specific code on behalf of the user.
    By utilizing a user's sub-wallet for a specific extrinsic call, we create granular control, allowing the user's wallet to perform the necessary actions efficiently and securely.
 
+---v
+
+[Moonbeam Docs: Calculate Derivative Account](https://docs.moonbeam.network/tutorials/interoperability/remote-batched-evm-calls/#calculating-your-multilocation-derivative-account)
+
+<figure>
+  <img rounded style="width: 900px;" src="../../../assets/img/8-XCM/add-proxy-moonriver.png" />
+  <figcaption>Extrinsic to add calculated derivative account as a proxy</figcaption>
+</figure>
+
 ---
 
 # Compose XCM message
@@ -169,16 +179,15 @@ With these parameters decided, proceed to construct the instruction sequence for
 
 ## Message elements
 
-To construct the XCM message, we utilize Moonriver's `xcmTransactor.transactThroughSigned` extrinsic.
-It requires the following parameters:
+To construct the XCM message, we utilize Moonriver's `xcmTransactor.transactThroughSigned` extrinsic, which requires the following parameters:
 
 **Destination**: It specifies the target chain, or for our case, the Turing Network, identified by {Relay, 2114} on Kusama.
 
 <br/>
 
 <figure>
-  <img rounded style="width: 900px;" src="../../../assets/img/8-XCM/xcm-transactor-extrinsic.png" />
-  <figcaption>The parameters in the `transactThroughDerivative()` extrinsic</figcaption>
+  <img rounded style="width: 900px;" src="../../../assets/img/8-XCM/transactThroughSigned-1.png" />
+  <figcaption>Destination parameter in transactThroughSigned</figcaption>
 </figure>
 
 ---v
@@ -188,10 +197,39 @@ It requires the following parameters:
 This represents the encoded call hash of the transaction on the destination chain.
 This value will be passed on to the Transact XCM instruction.
 
+[Encoded calldata on Turing polkadot.js app](https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Frpc.turing.oak.tech#/extrinsics/decode/0x3c030004000000000000000003010100a10f03010200a10f040303010200a10f040300a0e7ae395d64000000000000000000c90126018097c3c354652cb1eeed3e5b65fba2576470678a01581501000000000000000000000000000000000000000000000000000000000000970951a12f975e6762482aca81e57d5a2a4e73f4000000000000000000000000000000000000000000000000000000000000000010d09de08a0003404ac76c5a15010003401462a85a860300d43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d)
+
+---v
+
 **Fees**
+
+`feeAmount` determines how many tokens will be consumed toward paying the XCM transaction.
+
+`call` bytes contains the encoded hash of the inner call
+
+<figure>
+  <img rounded style="width: 900px;" src="../../../assets/img/8-XCM/transactThroughSigned-2.png" />
+  <figcaption>Fees and InnerCall parameters in transactThroughSigned</figcaption>
+</figure>
+
+---v
+
+**Weights**
 
 `transactRequiredWeightAtMost` restricts the gas fee of the innerCall, preventing excessive fee token costs.
 Likewise, `overallWeight` sets an upper limit on XCM execution, including the Transact hash.
+
+
+<figure>
+  <img rounded style="width: 900px;" src="../../../assets/img/8-XCM/transactThroughSigned-3.png" />
+  <figcaption>Weight parameter in transactThroughSigned() extrinsic</figcaption>
+</figure>
+
+---v
+
+To put above parameters all together, we construct an xcmTransactor.transactThroughSigned extrinsic on Moonriver.
+
+[Encoded calldata on Moonriver polkadot.js app](https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Fmoonriver.public.blastapi.io#/extrinsics/decode/0x6b060301010009210000015db2ce53cdb20f00000000000000000081033c03000870af02650000000080bd026500000000030101009d1f030102009d1f040a030102009d1f040a00b485a28f8900000000000000000000c9016d01c60e71bd0f2e6d8832fea1a2d56091c48493c788015815010000000000000000000000000000000000000000000000000000000000007dd212fd97ab7c5fa3d44031ce1b9b50248e3177000000000000000000000000000000000000000000000000000000000000000010d09de08a0003404ac76c5a1501000340d64db4dabe04000c720beb3f580f0143f9cb18ae694cddb767161060850025a57a4f72a71bf47503e160e448000107e1884f370100)
 
 ---v
 
@@ -199,31 +237,22 @@ Likewise, `overallWeight` sets an upper limit on XCM execution, including the Tr
 
 ---v
 
-<img rounded style="width: 770px;" src="../../../assets/img/8-XCM/xcm-send-1.png"/>
-
 Once all the parameters are set, we can proceed by submitting and signing the transaction.
-The XCM message can be conveniently triggered directly from the extrinsic tab of [polkadot.js apps](https://polkadot.js.org/apps/).
+The XCM message can be conveniently submitted from the extrinsic tab of [polkadot.js apps](https://polkadot.js.org/apps/).
 
 ---v
 
-<img rounded style="width: 770px;" src="../../../assets/img/8-XCM/xcm-send-2.png"/>
+Moonriver's xcmTransactor.transactThroughSigned effectively encapsulates and simplifies the various components of XCM messages. In this section, we will swiftly examine the elements under the hood.
 
 `DescendOrigin(descend_location)`: The first instruction in the XCM array is DescendOrigin, transferring authority to the user's proxy account on the destination chain.
 
 ---v
-
-<img rounded style="width: 770px;" src="../../../assets/img/8-XCM/xcm-send-3.png"/>
 
 `WithdrawAsset` and `BuyExecution`: These two instructions work together to deduct XCM fees from the user's proxy wallet and reserve them for execution.
 
 ---v
 
 <img rounded style="width: 770px;" src="../../../assets/img/8-XCM/xcm-send-4.png"/>
-
-XCM message - Buy Execution
----v
-
-<img rounded style="width: 770px;" src="../../../assets/img/8-XCM/xcm-send-5.png"/>
 
 `Transact(origin_type, require_weight_at_most, call)`: The Transact instruction executes the encoded innerCall on the target chain.
 We ensured that the gas cost does not exceed the specified limit by setting requireWeightAtMost during the call.
@@ -245,10 +274,11 @@ After successfully firing the message, XCM events from both the sender and recip
 ## Inspection of the message
 
 Once the transaction above is submitted and finalized on the chain, we can use the xcm-tools built by the Moonbeam team to inspect the XCM message.
+
 The code and scripts for the tool are listed in [this Github repo](https://github.com/Moonsong-Labs/xcm-tools).
 An example of the script is shown below:
 
-`yarn xcm-decode-para --w wss://wss.api.moonbeam.network --b 1649282 --channel hrmp --p 2000`
+`yarn xcm-decode-para --w wss://rpc.turing.oak.tech --b 3433400 --channel hrmp --p 2023`
 
 ---v
 
@@ -272,9 +302,11 @@ The output of the script reflects the sequence of instructions we constructed fo
 After proving that the XCM message above executes correctly, we can replicate the procedure from the client of a dApp.
 Below is a node.js code snippet we created for this particular demo.
 
-👉 [xcm-demo Github Repo](https://github.com/OAK-Foundation/xcm-demo/blob/master/src/moonbeam/moonbase-alpha.js) 👈
+👉 [xcm-demo Github Repo](https://github.com/OAK-Foundation/xcm-demo/blob/v2.0.0/src/moonbeam/moonriver.js) 
 
-To run the program, clone it using git and execute the following command:
+👉 [oak.js SDK](https://github.com/OAK-Foundation/oak.js)
+
+To run the program, clone it using git, set up wallet keys in ./private folder and execute the following command:
 
 ```sh
 PASS_PHRASE=<PASS_PHRASE> PASS_PHRASE_ETH=<PASS_PHRASE_ETH> npm run moonbase-alpha
@@ -315,20 +347,172 @@ const tx = parachainHelper.api.tx.xcmTransactor.transactThroughSigned(
         },
     );
 ```
-
+The xcmTransactor.transactThroughSigned call in Javascript.
 </div>
+
 
 Notes:
 
 As you can see from the code, there are several preparation steps leading up to the main code block, which constructs the XCM message.
 With the help of the following code, we can easily dispatch the message repeatedly and test out different input values.
 
+---v
+<pre><code data-noescape>
+1. Setup accounts on turing and moonriver
+Parachain address:  0xc60e71bd0f2e6d8832Fea1a2d56091C48493C788
+Parachain balance: 10000000000000000000
+[
+  {
+    tokens: [
+      {
+        symbol: 'TUR',
+        balance: 3745,
+        balanceBN: <BN: 2210d0ca440e>,
+        reserved: 20,
+        miscFrozen: 3625,
+        feeFrozen: 3625
+      }
+    ],
+    chain: 'turing',
+    address: '66RxduFvFDjfQjYJRnX4ywgYm6w2SAiHqtqGKgY1qdfYCj3g'
+  }
+]
+paraTokenIdOnTuring:  9
+proxyOnTuring:  6BajV8RuHeQSXR1SjJ8c7YFRrGhzzXPPDPMG73P6rNRpDaDr
+
+1. One-time proxy setup on Turing
+a) Add a proxy for Alice If there is none setup on Turing (paraId:2023)
+Proxy address 6BajV8RuHeQSXR1SjJ8c7YFRrGhzzXPPDPMG73P6rNRpDaDr for paraId: 2023 and proxyType: Any already exists; skipping creation ...
+b) Reserve transfer DEV to the proxy account on Turing: 
+minBalanceOnTuring:  <BN: 6f05b59d3b20000>
+paraTokenbalanceOnTuring.free:  0
+Transfer DEV from Moonbase to Turing
+Resevered transfer call data:  0x6a0103000001040a00130000b2d3595bf0060301020009210100f05026c137509431d33db12d8d2e912e582b1876745114f6a2c7ae121838d42100
+status.type Ready
+status.type Broadcast
+status.type InBlock
+status.type Finalized
+
+1. One-time proxy setup on Moonbase
+a) Add a proxy for Alice If there is none setup on Moonbase (paraId:2023)
+parachainAddress: 0xc60e71bd0f2e6d8832Fea1a2d56091C48493C788, proxyOnMoonbase: 0x9ba2056419177d7784f6d6a1b8ebd0074f904d4c
+proxiesOnMoonbase:  []
+Add a proxy of moonriver (paraId:2023) and proxyType: Any on Turing ...
+Proxy address: 0x9ba2056419177d7784f6d6a1b8ebd0074f904d4c
+status.type Ready
+status.type Broadcast
+status.type InBlock
+status.type Finalized
+b) Topping up the proxy account on Moonbase with DEV ...
+status.type Ready
+status.type Broadcast
+status.type InBlock
+status.type Finalized
+User 1st Account turing address: 66RxduFvFDjfQjYJRnX4ywgYm6w2SAiHqtqGKgY1qdfYCj3g, moonriver address: 0xc60e71bd0f2e6d8832Fea1a2d56091C48493C788
+
+1. Execute an XCM from moonriver to turing ...
+a). Create a payload to store in Turing’s task ...
+Task extrinsic encoded call data: 0x3c03000870af02650000000080bd026500000000030101009d1f030102009d1f040a030102009d1f040a00b485a28f8900000000000000000000c9016d01c60e71bd0f2e6d8832fea1a2d56091c48493c788015815010000000000000000000000000000000000000000000000000000000000007dd212fd97ab7c5fa3d44031ce1b9b50248e3177000000000000000000000000000000000000000000000000000000000000000010d09de08a0003404ac76c5a1501000340d64db4dabe04000c720beb3f580f0143f9cb18ae694cddb767161060850025a57a4f72a71bf475
+Encoded call data: 0x3c03000870af02650000000080bd026500000000030101009d1f030102009d1f040a030102009d1f040a00b485a28f8900000000000000000000c9016d01c60e71bd0f2e6d8832fea1a2d56091c48493c788015815010000000000000000000000000000000000000000000000000000000000007dd212fd97ab7c5fa3d44031ce1b9b50248e3177000000000000000000000000000000000000000000000000000000000000000010d09de08a0003404ac76c5a1501000340d64db4dabe04000c720beb3f580f0143f9cb18ae694cddb767161060850025a57a4f72a71bf475
+taskViaProxyCallWeight.weight: { refTime: 1222926561, proofSize: 0 }
+b) Execute the above an XCM from Moonriver to schedule a task on Turing Network ...
+weight: (5222926561, 0)
+overallWeight: (5222926561, 0)})
+fungible:  4418719594754653
+transactExtrinsic Encoded call data: 0x6b060301010009210000015db2ce53cdb20f00000000000000000081033c03000870af02650000000080bd026500000000030101009d1f030102009d1f040a030102009d1f040a00b485a28f8900000000000000000000c9016d01c60e71bd0f2e6d8832fea1a2d56091c48493c788015815010000000000000000000000000000000000000000000000000000000000007dd212fd97ab7c5fa3d44031ce1b9b50248e3177000000000000000000000000000000000000000000000000000000000000000010d09de08a0003404ac76c5a1501000340d64db4dabe04000c720beb3f580f0143f9cb18ae694cddb767161060850025a57a4f72a71bf47503e160e448000107e1884f370100
+status.type Ready
+status.type Broadcast
+status.type InBlock
+	automationTime:TaskScheduled:: (phase={"applyExtrinsic":0})
+			AccountId32: 6BajV8RuHeQSXR1SjJ8c7YFRrGhzzXPPDPMG73P6rNRpDaDr
+			Bytes: 0x333433333430302d302d31
+			Option<AccountId32>: 66RxduFvFDjfQjYJRnX4ywgYm6w2SAiHqtqGKgY1qdfYCj3g
+status.type Finalized
+Listening to TaskScheduled event on Turing chain ...
+Found the event and retrieved TaskId, 3433400-0-1
+Reached the end of main() ...
+</code></pre>
+<br>
+<div style="font-size: 0.7em;">
+The xcm-demo program output for the xcmTransactor.transactThroughSigned call.
+</div>
+
 ---
 
 ## Debugging Live
 
-When working with XCM messages, potential issues can arise in two areas: during message construction and during transaction execution on the target chain.
+When working with XCM messages, potential issues can arise in two areas: during message construction and during transaction execution on the target chain. Here are some valuable tools at your disposal:
 
+- [Moonbeam xcm-tools](https://github.com/Moonsong-Labs/xcm-tools)
+- [Message Hash search on Polkaholic](https://polkaholic.io)
+- Ask questions directly by submitting a ticket in [OAK Discord](https://discord.gg/7W9UDvsbwh)
+
+---v
+
+<pre><code data-noescape>
+Blake2 hash of fragment 1 is: 0xd952a02b12da6c9958c8c40d94e18d98fdd75b4c7a187eefe520373c8640d6d5
+
+{
+  V3: [
+    { DescendOrigin: [Object] },
+    { WithdrawAsset: [Array] },
+    { BuyExecution: [Object] },
+    { Transact: [Object] },
+    'RefundSurplus',
+    { DepositAsset: [Object] }
+  ]
+} 
+
+Descend Origin:
+{"descendOrigin":{"x1":{"accountId32":{"network":null,"id":"0x3830ef2fdb02d711afe91c830737375e32ac9904886266897f361b5a2ec13a39"}}}} 
+
+Withdraw Asset:
+{"withdrawAsset":[{"id":{"concrete":{"parents":0,"interior":{"here":null}}},"fun":{"fungible":"0x000000000000000000fe41dc02f5b84a"}}]} 
+
+Buy Execution:
+{"buyExecution":{"fees":{"id":{"concrete":{"parents":0,"interior":{"here":null}}},"fun":{"fungible":"0x000000000000000000fe41dc02f5b84a"}},"weightLimit":{"limited":{"refTime":81327372555,"proofSize":1150932}}}} 
+
+Transact:
+{"transact":{"originKind":"SovereignAccount","requireWeightAtMost":{"refTime":75327372555,"proofSize":757716},"call":{"encoded":"0x1200003830ef2fdb02d711afe91c830737375e32ac9904886266897f361b5a2ec13a3901004000c0c62d0000000000000000000000000000000000000000000000000000000000056d9a990cd8814322b3fb7262abff05684da26d000000000000000000000000000000000000000000000000000000000000000010d09de08a00"}}} 
+
+RefundSurplus 
+
+Deposit Asset:
+{"depositAsset":{"assets":{"wild":{"allCounted":1}},"beneficiary":{"parents":1,"interior":{"x1":{"accountId32":{"network":null,"id":"0x3830ef2fdb02d711afe91c830737375e32ac9904886266897f361b5a2ec13a39"}}}}}} 
+
+</code></pre>
+<br>
+<div style="font-size: 0.7em;">
+The command-line output of the yarn xcm-decode-para script.
+</div>
+---v
+
+Example transaction - XCM sent on Moonriver
+https://moonriver.subscan.io/block/5106409
+
+<figure>
+  <img rounded style="width: 900px;" src="../../../assets/img/8-XCM/xcm-sent-event.png" />
+  <figcaption>XCM sent success event from Moonriver</figcaption>
+</figure>
+---v
+
+
+By correlating message hash we found that the message is received at 3433400 block on Turing Network.
+https://polkaholic.io/xcmmessage/0x2b291f1001be272b6fd8a8ccdf876c0491d251919f39888ef0bd60f308d7d51d/19672276
+
+<figure>
+  <img rounded style="width: 750px;" src="../../../assets/img/8-XCM/xcm-message-hash.png" />
+  <figcaption>The message hash of the sent XCM</figcaption>
+</figure>
+---v
+
+XCM received on Turing Network and successful TaskScheduled execution
+https://turing.subscan.io/block/3433400?tab=event
+
+<figure>
+  <img rounded style="width: 750px;" src="../../../assets/img/8-XCM/xcm-receive-event.png" />
+  <figcaption>The execution result of the payload on Turing</figcaption>
+</figure>
 ---v
 
 **Message Formatting Issues**: If the XCM message is malformed, the recipient chain may not process it correctly.
@@ -361,7 +545,7 @@ In this section, we explained the backbone of a recurring payment dApp leveragin
 
 ### Lesson Recap
 
-To create a successful XCM message between chains, ensure you have the following elements prepared:
+To successful remote execute an extrinsic via XCM between chains, ensure you have the following elements prepared:
 
 - Type: Identify whether it's VRP (Vertical Relay Process) or HRMP (Horizontal Relay Process), representing the two parties involved in the communication.
 

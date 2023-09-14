@@ -18,6 +18,7 @@
     "links": "markdown-link-check -c .github/workflows/mlc_config.json"
   },
   "dependencies": {
+    "decktape": "^3.10.0",
     "reveal-md": "git+https://github.com/NukeManDan/reveal-md.git#patch-1"
   },
   "devDependencies": {
