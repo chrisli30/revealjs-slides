@@ -33,6 +33,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - uses: actions/setup-node@v3
+          with:
+            node-version: '18'
+            cache: 'yarn'
+            
+      - run: corepack enable
+
       - name: Install and Build 🔧 # This example project is built using Yarn and outputs the result to the 'build' folder. Replace with the commands required to build your project, or remove this step entirely if your site is pre-built.
         run: |
           yarn install
