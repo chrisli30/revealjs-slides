@@ -1,5 +1,10 @@
 # Reveal.js Slides
 
+## Get Started
+1. Install Dependencies, `yarn`
+2. Run revealjs program, `yarn start`
+   
+   
 ## Exporting to PDF
 
 To export the current slides to a PDF file, run:

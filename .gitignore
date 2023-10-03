@@ -37,9 +37,8 @@ _static/
 !.yarn/versions
 # Yarn Integrity file
 .yarn-integrity
+package-lock.json
 
 ## Draw,io
 *.bkp
 *.dtmp
-
-syllabus/4-Smart_Contracts/*.html
