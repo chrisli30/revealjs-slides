@@ -64,7 +64,7 @@ Shopping Cart:<>Epic
 ---v
 
 ## Engineers Example:  
-By default，softerware project come with one parent issue type，three standard type （story, bug, task），one child issue type
+By default，softerware project come with one parent issue type，three standard types （story, bug, task），one child issue type
 - Enable password reset <> story 
 - Enable email address change <> story
 - Add phone number to user profile <> story
