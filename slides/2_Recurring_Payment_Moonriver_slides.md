@@ -93,7 +93,7 @@ To execute this operation, we will interact with the following components:
 Upon successful XCM execution, a TaskScheduled event will fire on the Turing Network, indicating that the remote call has been executed successfully, thereby creating an automation task.
 
 <figure>
-  <img rounded style="width: 900px;" src="../../../assets/img/8-XCM/high-level-product-flow.jpg" />
+  <img rounded style="width: 900px;" src="../assets/img/8-XCM/high-level-product-flow.jpg" />
   <figcaption>High-level product flow between Moonriver and Turing Network</figcaption>
 </figure>
 
@@ -136,7 +136,7 @@ Notes:
 [Moonbeam Docs: Calculate Derivative Account](https://docs.moonbeam.network/tutorials/interoperability/remote-batched-evm-calls/#calculating-your-multilocation-derivative-account)
 
 <figure>
-  <img rounded style="width: 900px;" src="../../../assets/img/8-XCM/add-proxy-moonriver.png" />
+  <img rounded style="width: 900px;" src="../assets/img/8-XCM/add-proxy-moonriver.png" />
   <figcaption>Extrinsic to add calculated derivative account as a proxy</figcaption>
 </figure>
 
@@ -186,7 +186,7 @@ To construct the XCM message, we utilize Moonriver's `xcmTransactor.transactThro
 <br/>
 
 <figure>
-  <img rounded style="width: 900px;" src="../../../assets/img/8-XCM/transactThroughSigned-1.png" />
+  <img rounded style="width: 900px;" src="../assets/img/8-XCM/transactThroughSigned-1.png" />
   <figcaption>Destination parameter in transactThroughSigned</figcaption>
 </figure>
 
@@ -208,7 +208,7 @@ This value will be passed on to the Transact XCM instruction.
 `call` bytes contains the encoded hash of the inner call
 
 <figure>
-  <img rounded style="width: 900px;" src="../../../assets/img/8-XCM/transactThroughSigned-2.png" />
+  <img rounded style="width: 900px;" src="../assets/img/8-XCM/transactThroughSigned-2.png" />
   <figcaption>Fees and InnerCall parameters in transactThroughSigned</figcaption>
 </figure>
 
@@ -221,7 +221,7 @@ Likewise, `overallWeight` sets an upper limit on XCM execution, including the Tr
 
 
 <figure>
-  <img rounded style="width: 900px;" src="../../../assets/img/8-XCM/transactThroughSigned-3.png" />
+  <img rounded style="width: 900px;" src="../assets/img/8-XCM/transactThroughSigned-3.png" />
   <figcaption>Weight parameter in transactThroughSigned() extrinsic</figcaption>
 </figure>
 
@@ -252,14 +252,14 @@ Moonriver's xcmTransactor.transactThroughSigned effectively encapsulates and sim
 
 ---v
 
-<img rounded style="width: 770px;" src="../../../assets/img/8-XCM/xcm-send-4.png"/>
+<img rounded style="width: 770px;" src="../assets/img/8-XCM/xcm-send-4.png"/>
 
 `Transact(origin_type, require_weight_at_most, call)`: The Transact instruction executes the encoded innerCall on the target chain.
 We ensured that the gas cost does not exceed the specified limit by setting requireWeightAtMost during the call.
 
 ---v
 
-<img rounded style="width: 770px;" src="../../../assets/img/8-XCM/xcm-send-5.png"/>
+<img rounded style="width: 770px;" src="../assets/img/8-XCM/xcm-send-5.png"/>
 
 <div style="font-size: 0.82em;">
 
@@ -491,7 +491,7 @@ Example transaction - XCM sent on Moonriver
 https://moonriver.subscan.io/block/5106409
 
 <figure>
-  <img rounded style="width: 900px;" src="../../../assets/img/8-XCM/xcm-sent-event.png" />
+  <img rounded style="width: 900px;" src="../assets/img/8-XCM/xcm-sent-event.png" />
   <figcaption>XCM sent success event from Moonriver</figcaption>
 </figure>
 ---v
@@ -501,7 +501,7 @@ By correlating message hash we found that the message is received at 3433400 blo
 https://polkaholic.io/xcmmessage/0x2b291f1001be272b6fd8a8ccdf876c0491d251919f39888ef0bd60f308d7d51d/19672276
 
 <figure>
-  <img rounded style="width: 750px;" src="../../../assets/img/8-XCM/xcm-message-hash.png" />
+  <img rounded style="width: 750px;" src="../assets/img/8-XCM/xcm-message-hash.png" />
   <figcaption>The message hash of the sent XCM</figcaption>
 </figure>
 ---v
@@ -510,7 +510,7 @@ XCM received on Turing Network and successful TaskScheduled execution
 https://turing.subscan.io/block/3433400?tab=event
 
 <figure>
-  <img rounded style="width: 750px;" src="../../../assets/img/8-XCM/xcm-receive-event.png" />
+  <img rounded style="width: 750px;" src="../assets/img/8-XCM/xcm-receive-event.png" />
   <figcaption>The execution result of the payload on Turing</figcaption>
 </figure>
 ---v
