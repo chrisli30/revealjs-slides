@@ -1,7 +1,7 @@
 {
-  "name": "polkadot-blockchain-academy",
+  "name": "revealjs-slides",
   "version": "0.1.0",
-  "description": "Polkadot Blockchain Academy",
+  "description": "Revealjs Slides",
   "scripts": {
     "start": "reveal-md ./ --watch --absolute-url http://localhost:1948",
     "s": "yarn start",
