@@ -17,7 +17,10 @@ Welcome to the Jira Guidelines for OAK Team. Jira is a powerful project manageme
 ---
 
 # Common functionalities
-## Issue Types （three standard issue types，one child type，one parent issue type） 
+## Issue Types 
+three standard issue types，one child type，one parent issue type
+
+---
 
 ### Story - standard issue type
 Stories, also called “user stories,” are short requirements or requests written from the perspective of an end user.
@@ -40,6 +43,7 @@ A work that needs to be completed.
 
 ### Sub-task - child issue type 
 A subtask is a piece of work that is required to complete a task.
+
 Task “Delete users not active in the last five years”
 - “Filter users in the last five years”
 
@@ -47,6 +51,7 @@ Task “Delete users not active in the last five years”
 
 ### Epic - Parent issue type
 Grouping of several issues of any type related to the same functionality. Epics group together bugs, stories, and tasks to show the progress of a larger initiative.
+
 Shopping Cart:<>Epic
 - add item to cart 
 - remove item from cart 
@@ -58,7 +63,8 @@ Shopping Cart:<>Epic
 
 ---v
 
-## Engineers Example:  By defaultst，softerware project come with one parante issue type，three standard type （story, bug, task），one child issue type
+## Engineers Example:  
+By defaultst，softerware project come with one parante issue type，three standard type （story, bug, task），one child issue type
 - Enable password reset <> story 
 - Enable email address change <> story
 - Add phone number to user profile <> story
