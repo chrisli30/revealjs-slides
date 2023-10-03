@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "decktape": "^3.10.0",
-    "reveal-md": "git+https://github.com/NukeManDan/reveal-md.git#patch-1"
+    "reveal-md": "git+https://github.com/chrisli30/reveal-md.git#patch-1"
   },
   "devDependencies": {
     "http-server": "^14.1.1",
