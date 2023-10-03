@@ -45,7 +45,7 @@ A work that needs to be completed.
 A subtask is a piece of work that is required to complete a task.
 
 Task “Delete users not active in the last five years”
-- “Filter users in the last five years”
+      - “Filter users in the last five years”
 
 ---v
 
@@ -64,7 +64,7 @@ Shopping Cart:<>Epic
 ---v
 
 ## Engineers Example:  
-By defaultst，softerware project come with one parante issue type，three standard type （story, bug, task），one child issue type
+By defaultst，softerware project come with one parent issue type，three standard type （story, bug, task），one child issue type
 - Enable password reset <> story 
 - Enable email address change <> story
 - Add phone number to user profile <> story
