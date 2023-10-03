@@ -17,38 +17,36 @@ Welcome to the Jira Guidelines for OAK Team. Jira is a powerful project manageme
 ---
 
 # Common functionalities
-## Issue Types
+## Issue Types （three standard issue types，one child type，one parent issue type） 
 
-### Story 
-Story means “User story” or “User requirement”  - something that our users will care about
+### Story - standard issue type
+Stories, also called “user stories,” are short requirements or requests written from the perspective of an end user.
 - “Change dashboard color from green to blue”
 - “Add phone number to user profile” 
 
 ---v
 
-### Bug
-But is something that does not work as expected and needs to be fixed.
+### Bug - standard issue type
+A bug is a problem which impairs or prevents the functions of a product.
 - “Username allows space characters” 
 
 ---v
 
-### Task
-
+### Task - standard issue type
 A work that needs to be completed. 
-
 - “Delete users not active in the last five years”
 
 ---v
 
-### Sub-task
+### Sub-task - child issue type 
+A subtask is a piece of work that is required to complete a task.
 Task “Delete users not active in the last five years”
 - “Filter users in the last five years”
 
 ---v
 
-### Epic
-Grouping of several issues of any type related to the same functionality 
-
+### Epic - Parent issue type
+Grouping of several issues of any type related to the same functionality. Epics group together bugs, stories, and tasks to show the progress of a larger initiative.
 Shopping Cart:<>Epic
 - add item to cart 
 - remove item from cart 
@@ -60,14 +58,14 @@ Shopping Cart:<>Epic
 
 ---v
 
-## Engineers Example:  story, bug, task
-- Enable password reset 
-- Enable email address change 
-- Add phone number to user profile 
-- Username allows space characters 
-- Username length is not validated 
-- Delete users not active in the last five years 
-- Re-index user database 
+## Engineers Example:  By defaultst，softerware project come with one parante issue type，three standard type （story, bug, task），one child issue type
+- Enable password reset <> story 
+- Enable email address change <> story
+- Add phone number to user profile <> story
+- Username allows space characters <>bug
+- Username length is not validated <> bug
+- Delete users not active in the last five years <> task
+- Re-index user database <> task
 
 ---v
 
