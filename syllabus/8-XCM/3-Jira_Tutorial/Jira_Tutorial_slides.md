@@ -18,7 +18,7 @@ Welcome to the Jira Guidelines for OAK Team. Jira is a powerful project manageme
 
 # Common functionalities
 ## Issue Types 
-three standard issue types，one child type，one parent issue type
+three standard issue types，one child issue type，one parent issue type
 
 ---
 
@@ -64,7 +64,7 @@ Shopping Cart:<>Epic
 ---v
 
 ## Engineers Example:  
-By defaultst，softerware project come with one parent issue type，three standard type （story, bug, task），one child issue type
+By default，softerware project come with one parent issue type，three standard type （story, bug, task），one child issue type
 - Enable password reset <> story 
 - Enable email address change <> story
 - Add phone number to user profile <> story
