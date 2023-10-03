@@ -6,4 +6,4 @@ duration: 15 minutes
 
 # Test Slides
 ## OAK Network
-*Linda Liang, 10.02.2023*
+*John Doe, 10.02.2023*
